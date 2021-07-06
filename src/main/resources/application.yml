@@ -1,0 +1,29 @@
+spring:
+   profiles:
+      active: ${ACTIVE_PROFILE:develop}
+   application:
+      name: financas-api
+   datasource:
+      hikari:
+         connectionTimeout: 20000
+         maximumPoolSize: 10
+         poolName: HikariPoolZZZ
+      platform: postgresql
+      url: jdbc:postgresql://${DATABASE_URL:localhost:5432}/${DATABASE_NAME:EMERSON}
+      username: ${DATABASE_USERNAME:postgres}
+      password: ${DATABASE_PASSWORD:teste}
+   jpa: 
+      show-sql: true
+      hibernate:
+         ddl-auto: none
+      properties:
+         hibernate:
+            format_sql: true
+            dialect: org.hibernate.dialect.PostgreSQLDialect
+   jackson:
+      serialization:
+         fail-on-empty-beans: false
+server:
+   port: ${PORT:8080}
+   servlet:
+      context-path: /financas/api
