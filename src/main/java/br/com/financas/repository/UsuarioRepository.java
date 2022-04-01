@@ -1,35 +1,22 @@
 package br.com.financas.repository;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
+import java.util.List;
 
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
-import org.springframework.transaction.annotation.Transactional;
 
 import br.com.financas.model.UsuarioModel;
 
 @Repository
-@Transactional
-public class UsuarioRepository {
+public interface UsuarioRepository extends CrudRepository<UsuarioModel, Long>{
+	
+	@Query(name = "loginUsuario", value = "SELECT u FROM UsuarioModel u WHERE u.email =:email and u.senha=:password")
+	UsuarioModel efetuarLogin(String email, String password);
+	
+	@Query(name = "usuarioExiste", value = "SELECT u FROM UsuarioModel u WHERE UPPER(u.email) =:email")
+	List<UsuarioModel> usuarioExistente(String email);
 
-	@PersistenceContext
-	private EntityManager entityManager;
-
-	public void salvarUsuario(UsuarioModel usuario) {
-		this.entityManager.persist(usuario);
-		this.entityManager.flush();
-	}
-
-	public UsuarioModel loginUsuario(String email, String senha) {
-		try {
-			return this.entityManager
-					.createQuery("SELECT u FROM UsuarioModel u WHERE u.emailUsuario=:email and u.senhaUsuario =:senha",
-							UsuarioModel.class)
-					.setParameter("email", email).setParameter("senha", senha).getSingleResult();
-
-		} catch (Exception e) {
-			return null;
-		}
-	}
-
+	
+	
 }

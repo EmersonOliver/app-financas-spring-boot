@@ -1,16 +1,12 @@
 package br.com.financas.dto;
 
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.Data;
 
-@Getter
-@Setter
-@NoArgsConstructor
+@Data
 public class UsuarioDTO {
 	
-	private String nomeUsuario;
-	private String tokenUsuario;
-	
+	private String nome;
+	private String email;
+	private String token;
 
 }

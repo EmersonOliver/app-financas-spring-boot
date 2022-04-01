@@ -1,54 +1,42 @@
 package br.com.financas.controle;
 
-import java.security.NoSuchAlgorithmException;
+import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import br.com.financas.bean.UsuarioBean;
-import br.com.financas.dto.UsuarioDTO;
+import br.com.financas.dto.LoginDTO;
 import br.com.financas.model.UsuarioModel;
-import br.com.financas.service.FinancaService;
-import br.com.financas.util.EncriptySHA;
 
 @RestController
 @RequestMapping("usuario")
 public class UsuarioControleApi {
-
 	
-	@Autowired
-	private FinancaService service;
 	
-	@PostMapping(value = "cadastrar", produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> cadastrarUsuario(@RequestBody UsuarioBean usuario){
+	@PostMapping("login")
+	public ResponseEntity<UsuarioModel> login( @Valid @RequestBody LoginDTO login) {
 		try {
-			UsuarioModel usuarioModel = montarUsuario(usuario);
-			UsuarioDTO usuarioDTO = this.service.cadastrarUsuario(usuarioModel);
-			return ResponseEntity.ok(usuarioDTO);
+			if(login != null) {
+			}
 		} catch (Exception e) {
-			return null;
+			return new ResponseEntity<UsuarioModel>(HttpStatus.BAD_REQUEST);
 		}
+		return null;
 	}
 	
-	@PostMapping(value="login", consumes = MediaType.APPLICATION_JSON_VALUE, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<?> loginUsuario(@RequestBody UsuarioBean usuarioBean){
-		try {
-			return ResponseEntity.ok(this.service.loginUsuario(usuarioBean));
-		} catch (Exception e) {
-			return null;
-		}
-	}
-	
-	private UsuarioModel montarUsuario(UsuarioBean usuario) throws NoSuchAlgorithmException {
-		UsuarioModel usuarioModel = new UsuarioModel();
-		usuarioModel.setEmailUsuario(usuario.getEmail());
-		usuarioModel.setNomeUsuario(usuario.getNome());
-		usuarioModel.setSenhaUsuario(EncriptySHA.encrypt(usuario.getSenha()));
-		return usuarioModel;
-	}
+	/*
+	 * @ResponseStatus(HttpStatus.BAD_REQUEST)
+	 * 
+	 * @ExceptionHandler(MethodArgumentNotValidException.class) public Map<String,
+	 * String> handleValidationExceptions( MethodArgumentNotValidException ex) {
+	 * Map<String, String> errors = new HashMap<>();
+	 * ex.getBindingResult().getAllErrors().forEach((error) -> { String fieldName =
+	 * ((FieldError) error).getField(); String errorMessage =
+	 * error.getDefaultMessage(); errors.put(fieldName, errorMessage); }); return
+	 * errors; }
+	 */
 }

@@ -21,30 +21,30 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "tb_usuario", schema = "financas")
-public class UsuarioModel implements Serializable {
+@Table(name="tb_financeira", schema = "financas")
+public class FinanceiraModel implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	
 	@Id
+	@Column(name = "id_financeira")
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	@Column(name = "id_usuario")
-	private Long idUsuario;
+	private Long idFinanceira;
+
+	@Column(name = "nome")
+	private String nome;
 	
-	@Column(name = "email")
-	private String email;
-	
-	@Column(name = "senha")
-	private String senha;
-	
-	@Column(name = "nomeUsuario")
-	private String nomeUsuario;
-	
+	@JoinColumn(name = "id_financeira", referencedColumnName = "id_financeira")
 	@OneToMany(fetch = FetchType.EAGER)
-	@JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario")
 	private List<CartaoModel> cartoes;
-	
+
+	public FinanceiraModel(Long idFinanceira, String nome) {
+		super();
+		this.idFinanceira = idFinanceira;
+		this.nome = nome;
+	}
 	
 	
 
+	 
 }
