@@ -15,8 +15,5 @@ public class LoginDTO {
 	@NotBlank(message = "E-mails is not empty")
 	private String email;
 	
-	@NotNull(message = "Password is not empty")
-	@NotBlank(message = "Password is not empty")
-	private String senha;
 	
 }

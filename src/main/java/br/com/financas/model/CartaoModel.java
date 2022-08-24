@@ -1,72 +1,72 @@
 package br.com.financas.model;
 
 import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.ForeignKey;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
-import br.com.financas.enums.BandeiraEnum;
-import br.com.financas.enums.TipoCartaoEnum;
 import lombok.Data;
-
 
 @Data
 @Entity
 @Table(name = "tb_cartao", schema = "financas")
-public class CartaoModel implements Serializable{
-
-	/**
+@SequenceGenerator(name = "sq_id_cartao", sequenceName = "seq_id_cartao", allocationSize = 1, initialValue = 1, schema = "financas")
+public class CartaoModel implements Serializable{/**
 	 * 
 	 */
 	private static final long serialVersionUID = 1L;
-
+	
 	@Id
 	@Column(name = "id_cartao")
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(generator = "sq_id_cartao", strategy = GenerationType.SEQUENCE)
 	private Long idCartao;
-	
-	@Column(name = "nome_cartao")
-	private String nomeCartao;
 	
 	@Column(name = "id_usuario")
 	private Long idUsuario;
 	
-	@Column(name = "id_financeira")
-	private Long idFinanceira;
+	@Column(name = "nome_cartao")
+	private String nomeCartao;
 	
 	@Column(name = "numero_cartao")
-	private String numeroCartao;
+	private Integer numeroCartao;
 	
-	@Column(name="bandeira")
-	private BandeiraEnum bandeira;
+	@Column(name = "bandeira_cartao")
+	private String bandeiraCartao;
 	
 	@Column(name = "tipo_cartao")
-	private TipoCartaoEnum tipoCartao;
+	private String tipoCartao;
 	
-	@Column(name = "mes_validade")
-	private Integer mesValidade;
+	@Temporal(TemporalType.DATE)
+	@Column(name = "data_vencimento")
+	private Date dataVencimento;
 	
-	@Column(name = "ano_validade")
-	private Integer anoValidade;
+	@Temporal(TemporalType.DATE)
+	@Column(name = "data_fechamento")
+	private Date dataFechamento;
 	
-	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "id_financeira", insertable = false, updatable = false, foreignKey =  @ForeignKey(name="fk_id_financeira"))
-	private FinanceiraModel financeiraModel;
-	
-	
-	@ManyToOne
-	@JoinColumn(name = "id_usuario", insertable = false, updatable = false)
+	@JsonIgnoreProperties(value = {"cartao"})
+	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", insertable = false, updatable = false)
 	private UsuarioModel usuario;
 	
-	
+	@JsonIgnoreProperties(value = {"cartao"})
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinColumn(referencedColumnName = "id_cartao", name = "id_cartao", updatable = false, insertable = false)
+	private List<ComprasModel> compras;
+
 }

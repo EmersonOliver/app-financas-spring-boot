@@ -9,9 +9,9 @@ spring:
          maximumPoolSize: 10
          poolName: HikariPoolZZZ
       platform: postgresql
-      url: jdbc:postgresql://${DATABASE_URL:localhost:5432}/${DATABASE_NAME:emerson}
-      username: ${DATABASE_USERNAME:root}
-      password: ${DATABASE_PASSWORD:isosra}
+      url: jdbc:postgresql://${DATABASE_URL:localhost:5432}/${DATABASE_NAME:EMERSON}
+      username: ${DATABASE_USERNAME:postgres}
+      password: ${DATABASE_PASSWORD:teste123}
    jpa: 
       show-sql: true
       hibernate:
@@ -27,3 +27,5 @@ server:
    port: ${PORT:8080}
    servlet:
       context-path: /financas/api
+jwt:
+  secret: ea3f6608-c5bf-43ea-ba1f-564da2b4ac44
