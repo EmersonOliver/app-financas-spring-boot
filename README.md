@@ -19,7 +19,7 @@ parcelas conforme o tempo irão ficando mais leves.
 
 Código fonte OpenSource:
 
-- [SpringBoot] - JDK 8
+- [SpringBoot] - JDK 11+
 - [SpringData] - Hibernate JPA
 - [Docker/Postgres] - Postgresql 
 
