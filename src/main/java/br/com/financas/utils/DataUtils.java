@@ -2,7 +2,13 @@ package br.com.financas.utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
+import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class DataUtils {
 
@@ -25,4 +31,33 @@ public class DataUtils {
 		}
 	}
 	
+	public static List<String> convertListDateToListString(List<Date> dates){
+		return (dates != null && !dates.isEmpty()) ? dates.stream()
+				.map(x -> new SimpleDateFormat("dd/MM/yyyy")
+						.format(x)).collect(Collectors.toList()) : new ArrayList<>();
+	}
+	
+	public static List<Date> dataVencimentoFatura(int xVezes, int diaFechamento, LocalDate data){
+		Date dataLancamento = Date.from(data.withDayOfMonth(diaFechamento).atStartOfDay(ZoneId.systemDefault()).toInstant());
+		List<Date> fatura = new ArrayList<>();
+		for(int i = 0; i <= xVezes; i++) {
+			fatura.add(dataLancamento(dataLancamento, i, diaFechamento));
+		}
+		return fatura;
+	}
+	
+	private static Date dataLancamento(Date data, int parcela, int diaVencimento) {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(data);
+		cal.add(Calendar.MONTH, parcela);
+		return cal.getTime();
+	}
+	
+	public Date dataCartao(String data) throws ParseException {
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(new Date());
+		cal.add(Calendar.DAY_OF_MONTH, Integer.valueOf(data));
+		String dataFatura = new SimpleDateFormat("dd-MM-yyyy").format(cal.getTime());
+		return new SimpleDateFormat("dd-MM-yyyy").parse(dataFatura);
+	}
 }

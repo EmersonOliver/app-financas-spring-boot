@@ -38,7 +38,7 @@ public class UsuarioModel implements Serializable {
 	@Column(name = "email")
 	private String email;
 	
-	@Column(name = "nomeUsuario")
+	@Column(name = "nome_usuario")
 	private String nomeUsuario;
 	
 	@JsonIgnoreProperties(value = {"usuario"})

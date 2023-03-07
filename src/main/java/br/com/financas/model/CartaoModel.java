@@ -1,7 +1,6 @@
 package br.com.financas.model;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -15,8 +14,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -51,13 +48,11 @@ public class CartaoModel implements Serializable{/**
 	@Column(name = "tipo_cartao")
 	private String tipoCartao;
 	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "data_vencimento")
-	private Date dataVencimento;
+	@Column(name = "dia_vencimento")
+	private Integer dataVencimento;
 	
-	@Temporal(TemporalType.DATE)
-	@Column(name = "data_fechamento")
-	private Date dataFechamento;
+	@Column(name = "dia_fechamento")
+	private Integer dataFechamento;
 	
 	@JsonIgnoreProperties(value = {"cartao"})
 	@ManyToOne(fetch = FetchType.LAZY)

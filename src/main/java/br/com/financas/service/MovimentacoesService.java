@@ -1,5 +1,9 @@
 package br.com.financas.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -31,45 +35,74 @@ public class MovimentacoesService {
 	}
 
 	private List<ComprasModel> processarCompras(CartaoModel cartao, Date dataCompra, Compra compra) {
-		Calendar cal = Calendar.getInstance();
+//		Calendar cal = Calendar.getInstance();
 		List<ComprasModel> compras = new ArrayList<>();
-
-		if (dataCompra.after(cartao.getDataVencimento())
-				&& dataCompra.getTime() > cartao.getDataVencimento().getTime()) {
-			cal.add(Calendar.MONTH, 1);
-		}
-
-		for (int i = 1; i < compra.getQtdParcelas(); i++) {
-			ComprasModel mCompra = new ComprasModel();
-			mCompra.setCompra(compra.getCompra());
-			mCompra.setDataPagamento(cal.getTime());
-			mCompra.setDataCompra(DataUtils.converterStringToDate(compra.getDataPagamento(), DataUtils.yyyy_MM_dd));
-			mCompra.setMetodoPagamento(compra.getMetodoPagamento());
-			mCompra.setQtdParcelas(compra.getQtdParcelas());
-			mCompra.setValorParcela(compra.getValorParcela());
-			mCompra.setValorTotal(compra.getValorTotal());
-			mCompra.setIdCartao(cartao.getIdCartao());
-			compras.add(mCompra);
-			cal.add(Calendar.MONTH, 1);
-		}
+//
+//		if (dataCompra.after(DataUtils.dataCartao(cartao.getDataVencimento().toString()))
+//				&& dataCompra.getTime() > cartao.getDataVencimento().getTime()) {
+//			cal.add(Calendar.MONTH, 1);
+//		}
+//
+//		for (int i = 1; i < compra.getQtdParcelas(); i++) {
+//			ComprasModel mCompra = new ComprasModel();
+//			mCompra.setCompra(compra.getCompra());
+//			mCompra.setDataPagamento(cal.getTime());
+//			mCompra.setDataCompra(DataUtils.converterStringToDate(compra.getDataPagamento(), DataUtils.yyyy_MM_dd));
+//			mCompra.setMetodoPagamento(compra.getMetodoPagamento());
+//			mCompra.setQtdParcelas(compra.getQtdParcelas());
+//			mCompra.setValorParcela(compra.getValorParcela());
+//			mCompra.setValorTotal(compra.getValorTotal());
+//			mCompra.setIdCartao(cartao.getIdCartao());
+//			compras.add(mCompra);
+//			cal.add(Calendar.MONTH, 1);
+//		}
 		return compras;
 	}
 	
-	/*
-	 * public static void main(String[] args) throws ParseException { int qtdParcela
-	 * = 2;
-	 * 
-	 * Calendar cal = Calendar.getInstance(); Date vencimentoFatura = new
-	 * SimpleDateFormat("dd-MM-yyyy").parse("21-08-2022"); Date dataCompra = new
-	 * Date();
-	 * 
-	 * if(dataCompra.after(vencimentoFatura) && dataCompra.getTime() >
-	 * vencimentoFatura.getTime()) { cal.add(Calendar.MONTH, 1); }
-	 * 
-	 * for(int i = 1; i <= qtdParcela; i++ ) { Date data = cal.getTime();
-	 * System.out.println("Parcela: " + i + " vencimento compra: " +
-	 * DataUtils.converterDataToString(data, DataUtils.dd_MM_yyyy));
-	 * cal.add(Calendar.MONTH, 1); } }
-	 */
+	
+	public static void main(String[] args) throws ParseException {
+		int qtdParcelas = 12;
+		int diaFechamento = 6;
+		int diaFatura = 22;
+		
+		LocalDate dataCompra = LocalDate.now();
+		
+		Calendar cal = Calendar.getInstance();
+		cal.set(Calendar.DAY_OF_MONTH, diaFechamento);
+		
+		Date dataFechamento = cal.getTime();
+		
+	
+		
+		LocalDate dtFechamento = dataFechamento.toInstant().atZone(ZoneId.systemDefault()).toLocalDate();
+		
+		if(!dtFechamento.isEqual(dataCompra)) {
+			cal.set(Calendar.DAY_OF_MONTH, diaFatura);
+			cal.set(Calendar.MONTH, dataCompra.getMonth().getValue()-1);
+			Date dataFatura = cal.getTime();
+			System.out.println("Data da proxima fatura=> " + new SimpleDateFormat("dd-MM-yyyy").format(dataFatura));
+		}else {
+			cal.set(Calendar.DAY_OF_MONTH, diaFatura);
+			cal.set(Calendar.MONTH, dataCompra.getMonth().getValue());
+			Date dataFatura = cal.getTime();
+			System.out.println("Data da proxima fatura=> " + new SimpleDateFormat("dd-MM-yyyy").format(dataFatura));
+		}
+		System.out.println("Data compra=> " + new SimpleDateFormat("dd-MM-yyyy").format(Date.from(dataCompra.atStartOfDay(ZoneId.systemDefault()).toInstant())));
+		System.out.println("Parcelas Futura: ");
+		
+		cal.setTime(Date.from(dataCompra.atStartOfDay(ZoneId.systemDefault()).toInstant()));
+		int mesCompra = dataCompra.getMonthValue();
+		for(int i = 0; i < qtdParcelas; i++) {
+			cal.set(Calendar.MONTH, (mesCompra+i == 12) ? 0 : mesCompra +i);
+			System.out.println("Nº parcela: "+ (i+1) +" Data: " + new SimpleDateFormat("dd-MM-yyyy").format(cal.getTime()));
+		}
+		
+		
+		
+		
+		
+		
+	}
+	 
 
 }
