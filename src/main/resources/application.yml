@@ -9,13 +9,13 @@ spring:
          maximumPoolSize: 10
          poolName: HikariPoolZZZ
       platform: postgresql
-      url: jdbc:postgresql://${DATABASE_URL:localhost:5432}/${DATABASE_NAME:EMERSON}
+      url: jdbc:postgresql://${DATABASE_URL:localhost:5432}/${DATABASE_NAME:PROJETO}
       username: ${DATABASE_USERNAME:postgres}
-      password: ${DATABASE_PASSWORD:teste123}
+      password: ${DATABASE_PASSWORD:isosra}
    jpa: 
       show-sql: true
       hibernate:
-         ddl-auto: update
+         ddl-auto: none
       properties:
          hibernate:
             format_sql: true
