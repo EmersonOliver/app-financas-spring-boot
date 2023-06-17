@@ -1,13 +1,14 @@
 package br.com.financas.model.json;
 
+import java.math.BigDecimal;
+
 public class Cartao {
 
-	public String usuario;
 	public String nomeCartao;
-	public Integer numeroCartao;
-	public String bandeiraCartao;
-	public String dataVencimento;
-	public String dataFechamento;
-	public String tipoCartao;
+	public String numeroCartao;
+	public Integer diaVencimento;
+	public Integer diaFechamento;
+	public BigDecimal limiteCartao;
+	public BigDecimal limiteUtilizado;
 
 }

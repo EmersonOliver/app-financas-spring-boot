@@ -1,28 +1,22 @@
 package br.com.financas.model;
 
 import java.io.Serializable;
-import java.util.List;
+import java.math.BigDecimal;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
-
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "tb_cartao", schema = "financas")
-@SequenceGenerator(name = "sq_id_cartao", sequenceName = "seq_id_cartao", allocationSize = 1, initialValue = 1, schema = "financas")
+@Table(name = "tb_cartao", schema = "app_financas")
+@SequenceGenerator(name = "sq_id_cartao", sequenceName = "seq_id_cartao", allocationSize = 1, initialValue = 1, schema = "app_financas")
 public class CartaoModel implements Serializable{/**
 	 * 
 	 */
@@ -33,35 +27,22 @@ public class CartaoModel implements Serializable{/**
 	@GeneratedValue(generator = "sq_id_cartao", strategy = GenerationType.SEQUENCE)
 	private Long idCartao;
 	
-	@Column(name = "id_usuario")
-	private Long idUsuario;
-	
-	@Column(name = "nome_cartao")
+	@Column(name = "no_cartao")
 	private String nomeCartao;
 	
-	@Column(name = "numero_cartao")
-	private Integer numeroCartao;
-	
-	@Column(name = "bandeira_cartao")
-	private String bandeiraCartao;
-	
-	@Column(name = "tipo_cartao")
-	private String tipoCartao;
+	@Column(name = "nu_cartao")
+	private String numeroCartao;
 	
 	@Column(name = "dia_vencimento")
-	private Integer dataVencimento;
+	private Integer diaVencimento;
 	
 	@Column(name = "dia_fechamento")
-	private Integer dataFechamento;
+	private Integer diaFechamento;
 	
-	@JsonIgnoreProperties(value = {"cartao"})
-	@ManyToOne(fetch = FetchType.LAZY)
-	@JoinColumn(name = "id_usuario", referencedColumnName = "id_usuario", insertable = false, updatable = false)
-	private UsuarioModel usuario;
+	@Column(name = "limite_cartao")
+	private BigDecimal limiteCartao;
 	
-	@JsonIgnoreProperties(value = {"cartao"})
-	@OneToMany(fetch = FetchType.LAZY)
-	@JoinColumn(referencedColumnName = "id_cartao", name = "id_cartao", updatable = false, insertable = false)
-	private List<ComprasModel> compras;
+	@Column(name = "limite_utilizado")
+	private BigDecimal limiteUtilizado;
 
 }

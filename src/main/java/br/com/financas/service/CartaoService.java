@@ -2,6 +2,7 @@ package br.com.financas.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,11 +13,10 @@ import org.springframework.data.domain.Sort.Direction;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
+import br.com.financas.controle.exception.handler.ApiException;
 import br.com.financas.model.CartaoModel;
-import br.com.financas.model.UsuarioModel;
 import br.com.financas.model.json.Cartao;
 import br.com.financas.repository.CartaoRepository;
-import br.com.financas.repository.UsuarioRepository;
 import br.com.financas.specs.CartaoSpecification;
 
 @Service
@@ -25,22 +25,21 @@ public class CartaoService {
 	@Autowired
 	private CartaoRepository cartaoRepository;
 
-	@Autowired
-	private UsuarioRepository usuarioRepository;
-
 	public CartaoModel salvarCartao(Cartao cartao) {
-		CartaoModel card = new CartaoModel();
-		UsuarioModel usuario = usuarioRepository
-				.findByUsuarioNome(cartao.usuario.toUpperCase())
-				.orElseThrow(() -> null);
-		card.setDataFechamento(Integer.valueOf(cartao.dataFechamento));
-		card.setBandeiraCartao(cartao.bandeiraCartao);
-		card.setDataVencimento(Integer.valueOf(cartao.dataVencimento));
-		card.setNomeCartao(cartao.nomeCartao);
-		card.setNumeroCartao(cartao.numeroCartao);
-		card.setTipoCartao(cartao.tipoCartao);
-		card.setIdUsuario(usuario.getIdUsuario());
-		return cartaoRepository.save(card);
+
+		Optional<CartaoModel> cartaoModel = cartaoRepository.findByNumeroCartaoContaining(cartao.numeroCartao);
+
+		if (cartaoModel.isPresent()) {
+			throw new ApiException("Registro já cadastrado");
+		}
+		cartaoModel = Optional.of(new CartaoModel());
+		cartaoModel.get().setNumeroCartao(cartao.numeroCartao);
+		cartaoModel.get().setDiaFechamento(cartao.diaFechamento);
+		cartaoModel.get().setDiaVencimento(cartao.diaVencimento);
+		cartaoModel.get().setLimiteCartao(cartao.limiteCartao);
+		cartaoModel.get().setLimiteUtilizado(cartao.limiteUtilizado);
+		cartaoModel.get().setNomeCartao(cartao.nomeCartao);
+		return cartaoRepository.save(cartaoModel.get());
 	}
 
 	public Page<CartaoModel> buscarCartoes(Cartao cartao, String ordem, Integer page) {
@@ -50,17 +49,11 @@ public class CartaoService {
 		List<Specification<CartaoModel>> listSpecs = new ArrayList<>();
 		Specification<CartaoModel> specs = null;
 
-		if (cartao.bandeiraCartao != null) {
-			listSpecs.add(CartaoSpecification.bandeiraCartao(cartao.bandeiraCartao));
-		}
 		if (cartao.nomeCartao != null) {
 			listSpecs.add(CartaoSpecification.nomeCartao(cartao.nomeCartao));
 		}
 		if (cartao.numeroCartao != null) {
 			listSpecs.add(CartaoSpecification.numeroCartao(cartao.numeroCartao));
-		}
-		if (cartao.tipoCartao != null) {
-			listSpecs.add(CartaoSpecification.tipoCartao(cartao.tipoCartao));
 		}
 		specs = !listSpecs.isEmpty() ? Specification.where(listSpecs.get(0)) : null;
 
@@ -69,7 +62,5 @@ public class CartaoService {
 		}
 		return cartaoRepository.findAll(specs, pagination);
 	}
-
-
 
 }

@@ -10,19 +10,8 @@ public class CartaoSpecification {
 		return (root, query, builder) -> builder.and(builder.like(root.get("nomeCartao"), nomeCartao.concat("%")));
 	}
 	
-	public static Specification<CartaoModel> numeroCartao(Integer numeroCartao){
+	public static Specification<CartaoModel> numeroCartao(String numeroCartao){
 		return (root, query, builder) -> builder.and(builder.equal(root.get("numeroCartao"), numeroCartao));
 	}
 	
-	public static Specification<CartaoModel> usuarioCartao(String nomeUsuario){
-		return (root, query, builder) -> builder.and(builder.like(root.get("usuario").get("nomeUsuario"), nomeUsuario+"%"));
-	}
-	
-	public static Specification<CartaoModel> bandeiraCartao(String bandeiraCartao){
-		return(root,query, builder) -> builder.and(builder.like(root.get("bandeiraCartao"), bandeiraCartao+"%"));
-	}
-	
-	public static Specification<CartaoModel> tipoCartao(String tipoCartao){
-		return(root,query, builder) -> builder.and(builder.like(root.get("tipoCartao"), tipoCartao+"%"));
-	}
 }
