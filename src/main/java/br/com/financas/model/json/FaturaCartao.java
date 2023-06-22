@@ -10,5 +10,6 @@ public class FaturaCartao {
 	public Date dataVencimento;
 	public BigDecimal valorFatura;
 	public String situacaoFatura;
+	public Cartao cartao;
 	
 }
