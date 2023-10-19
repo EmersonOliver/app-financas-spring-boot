@@ -60,6 +60,12 @@ public class CompraEntity implements Serializable{
 	@Column(name = "data_compra")
 	private Date dataCompra;
 	
+	@Column(name = "valor_parcela")
+	private BigDecimal valorParcela;
+	
+	@Column(name = "valor_prim_parcela")
+	private BigDecimal valorPrimeiraParcela;
+	
 	@Column(name = "qtd_parcelas")
 	private Integer qtdParcelas;
 	

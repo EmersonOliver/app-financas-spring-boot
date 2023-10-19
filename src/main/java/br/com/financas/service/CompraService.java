@@ -1,6 +1,5 @@
 package br.com.financas.service;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,14 +24,18 @@ public class CompraService {
 
 	@Autowired
 	private CartaoService cartaoService;
+	
+	@Autowired
+	private ParcelaService parcelaService;
 
-	public List<CompraEntity> salvarCompra(Compra compra) {
-		 List<CompraEntity> listCompras = new ArrayList<>();
-		 CartaoModel cartao = cartaoService.carregarCartaoById(compra.getIdCartao()).orElse(null);
-		List<Date> dataVencimento =	DataUtils.dataVencimentoFatura(compra.getQtdParcelas(),cartao.getDiaFechamento() , LocalDate.now());
-			List<CompraEntity> compraEntity = CompraFactory.instance(compra, dataVencimento);
-			compraEntity.forEach(x-> listCompras.add(compraRepository.save(x)));
-		return listCompras;
+	public CompraEntity salvarCompra(Compra compra) {
+		CartaoModel cartao = cartaoService.carregarCartaoById(compra.getIdCartao()).orElse(null);
+		CompraEntity compraEntity = CompraFactory.instance(compra);
+		compraEntity.setCartao(cartao);
+		
+		parcelaService.salvarParcelas(compraEntity);
+		
+		return compraRepository.save(compraEntity);
 	}
 
 	public List<CompraEntity> carregarComprasCartao(Long idCartao) {
@@ -43,14 +46,14 @@ public class CompraService {
 		}
 		return new ArrayList<>();
 	}
-	
-	public List<CompraEntity> carregarCompraByDataCompra(String dataInicio, String dataFim){
+
+	public List<CompraEntity> carregarCompraByDataCompra(String dataInicio, String dataFim) {
 		Date dtInicio = DataUtils.converterStringToDate(dataInicio, DataUtils.yyyy_MM_dd);
 		Date dtFim = DataUtils.converterStringToDate(dataFim, DataUtils.yyyy_MM_dd);
 		return compraRepository.listarComprasByDataCompra(dtInicio, dtFim);
 	}
-	
-	public List<CompraEntity> listarCompraByParametros(Map<String, Object> params){
+
+	public List<CompraEntity> listarCompraByParametros(Map<String, Object> params) {
 		return null;
 	}
 

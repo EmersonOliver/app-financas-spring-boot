@@ -1,7 +1,5 @@
 package br.com.financas.controle;
 
-import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -24,7 +22,7 @@ public class CompraControle {
 	
 	@PostMapping(path = "cadastrar", consumes = "application/json;UTF-8", produces = "application/json;UTF-8")
 	public ResponseEntity<?> cadastrarCompra(@RequestBody Compra compra){
-		List<CompraEntity> compraEntity = this.compraService.salvarCompra(compra);
+		CompraEntity compraEntity = this.compraService.salvarCompra(compra);
 		return new ResponseEntity<>(compraEntity, HttpStatus.CREATED);
 	}
 	
