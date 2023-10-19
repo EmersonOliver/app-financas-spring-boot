@@ -52,10 +52,6 @@ public class CartaoModel implements Serializable{/**
 	
 	@JsonManagedReference
 	@OneToMany(mappedBy = "cartao", fetch = FetchType.EAGER)
-	private List<FaturaCartaoEntity> faturas;
-	
-	@JsonManagedReference
-	@OneToMany(mappedBy = "cartao", fetch = FetchType.EAGER)
 	private List<CompraEntity> compras;
 	
 

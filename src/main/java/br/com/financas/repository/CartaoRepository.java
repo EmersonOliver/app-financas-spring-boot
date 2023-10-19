@@ -10,6 +10,5 @@ import br.com.financas.model.CartaoModel;
 
 @Repository
 public interface CartaoRepository extends JpaRepository<CartaoModel, Long>, JpaSpecificationExecutor<CartaoModel> {
-
 	public Optional<CartaoModel> findByNumeroCartaoContaining(String numeroCartao);
 }

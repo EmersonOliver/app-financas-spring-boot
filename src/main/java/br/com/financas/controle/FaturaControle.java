@@ -18,7 +18,7 @@ import br.com.financas.service.FaturaService;
 public class FaturaControle {
 	
 	@Autowired
-	FaturaService faturaService;
+	private FaturaService faturaService;
 
 	@PostMapping("cadastrar")
 	public ResponseEntity<?> cadastrarFatura(@RequestBody FaturaCartao request){

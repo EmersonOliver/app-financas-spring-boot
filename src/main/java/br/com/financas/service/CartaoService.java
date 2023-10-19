@@ -63,4 +63,8 @@ public class CartaoService {
 		return cartaoRepository.findAll(specs, pagination);
 	}
 
+	
+	public Optional<CartaoModel> carregarCartaoById(Long idCartao){
+		return cartaoRepository.findById(idCartao);
+	}
 }
